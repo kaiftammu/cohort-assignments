@@ -1,0 +1,13 @@
+{
+  "name": "middlware-assingments",
+  "version": "1.0.0",
+  "main": "req-count.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
