@@ -3,7 +3,6 @@ const app = express();
 
 let numberOfRequestsForUser = {};
 
-// reset counts every second
 setInterval(() => {
   numberOfRequestsForUser = {};
 }, 1000);
@@ -18,7 +17,6 @@ app.use(function (req, res, next) {
   if (numberOfRequestsForUser[userId]) {
     numberOfRequestsForUser[userId] = numberOfRequestsForUser[userId] + 1;
 
-    // check against limit
     if (numberOfRequestsForUser[userId] > 5) {
       return res.status(429).json({ error: "Too many requests, slow down!" });
     } else {
