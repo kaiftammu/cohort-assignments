@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+</head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>replit</title>
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <h1>Todo list</h1>
+  <div id="todos">
+    <!-- First todo item -->
+    <div id="todo-1">
+      <h4>1. Take class</h4>
+      <button onclick="deleteTodo(1)">delete</button>
+    </div>
+    <!-- Second todo item -->
+    <div id="todo-2">
+      <h4>2. Go out to eat</h4>
+      <button onclick="deleteTodo(2)">delete</button>
+    </div>
+  </div>
+  <div>
+    <!-- Input box for new todo -->
+    <input id="inp" type="text"></input>
+    <!-- Button to add new todo -->
+    <button onclick="addTodo()">Add Todo</button>
+  </div>
+</body>
+
+<script>
+  let currentIndex = 3; // Start new todos from 3
+
+  // Function to add a new todo
+  function addTodo() {
+    const inputEl = document.getElementById("inp"); // Get input box
+    const textNode = document.createElement("div"); // Create new div for todo
+    // Set inner HTML for new todo with delete button
+    textNode.innerHTML = "<div id='todo-" + currentIndex + "'><h4>" + inputEl.value + '</h4><button onclick="deleteTodo(' + currentIndex + ') ">Delete</button>';
+    const parentEl = document.getElementById("todos"); // Get todos container
+    parentEl.appendChild(textNode); // Add new todo to list
+
+    currentIndex = currentIndex + 1; // Increase index for next todo
+  }
+
+  // Function to delete a todo
+  function deleteTodo(index) {
+    const element = document.getElementById("todo-" + index); // Find todo by id
+    element.parentNode.removeChild(element); // Remove todo from list
+  }
+</script>
+
+</html>
