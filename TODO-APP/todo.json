@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "task": "Learn Node.js",
+    "status": "done"
+  },
+  {
+    "id": 2,
+    "task": "Do homework",
+    "status": "done"
+  }
+]
