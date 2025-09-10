@@ -3,57 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>sum calculator</title>
+    <title>Sum Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.6/axios.min.js"></script>
 </head>
 <body>
-     <h1> Sum Calculator</h1>
-     <label>
+    <h1>Sum Calculator</h1>
+    
+    <label>
         Number A: 
         <input id="numA" type="number" />
-     </label>
-     <br /><br />
-     <label>
+    </label>
+    <br><br>
+    <label>
         Number B:
         <input id="numB" type="number" />
-     </label>
-     <br /><br />
-     <button id="calcBtn">Calculate Sum</button>
-     
-     <h2 id="result"></h2>
+    </label>
+    <br><br>
     
-     <script>
-        const numA=document.getElementById("numA");
+    <button id="calcBtn">Calculate Sum</button>
+    <h2 id="result"></h2>
+
+    <script>
+        const numA = document.getElementById("numA");
         const numB = document.getElementById("numB");
-        const resultEl=document.getElementById("result");
+        const resultEl = document.getElementById("result");
+        const button = document.getElementById("calcBtn");
 
-        document.getElementById("calcBtn").addEventListener("click",async() =>{
-            const a=Number(numA.value);
-            const b=Number(numB.value);
-        
-if(Number.isNaN(a)||Number.isNaN(b)){
-   resultEl
-   .innerText="please enter valid numbers for A and B";
-}
+        button.addEventListener("click", async () => {
+            const a = Number(numA.value);
+            const b = Number(numB.value);
 
-try{
-   const resp = await fetch("http://localhost:3000/sum",{
-   method: "POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({a,b})
-});
+            if (Number.isNaN(a) || Number.isNaN(b)) {
+                resultEl.innerText = "Please enter valid numbers for A and B";
+                return; // stop here if invalid
+            }
 
-const data = await resp.json();
-if (!resp.ok){
-   resultEl.innerText=`Error:${data.error||resp.statusText}`;
-   return;
-}
-resultEl.innerText="sum:"+data.sum;
-}catch(err){
-   resultEl.innerText="Network error: " + err.message;
-}
+            try {
+                // ✅ fixed URL + inside the event listener
+                const res = await axios.post("http://localhost:3000/sum", { a, b });
+                resultEl.innerText = "Sum is: " + res.data.sum;
+            } catch (err) {
+                resultEl.innerText = "Something went wrong!";
+                console.error(err); // for debugging
+            }
         });
-     </script>
-
+    </script>
 </body>
 </html>
