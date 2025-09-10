@@ -9,14 +9,14 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/sum",(req,res)=> {
-    const{a,b}= req.body;
+    const{ a, b }= req.body;
 
-    if (typeof a !=="number"||typeof b !== "number"){
+    if ( isNaN(a) || isNaN(b) ){
         return res.status(400).json({Error: "please send numbers a and b in JSON body"});
         
     }
-    const result = a + b;
-    return res.json({ sum: result });
+    const result = Number(a) + Number(b);
+    res.json({ sum: result });
 });
 
 app.listen(PORT, () => {
