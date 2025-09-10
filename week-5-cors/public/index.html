@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sum calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.6/axios.min.js"></script>
+</head>
+<body>
+     <h1> Sum Calculator</h1>
+     <label>
+        Number A: 
+        <input id="numA" type="number" />
+     </label>
+     <br /><br />
+     <label>
+        Number B:
+        <input id="numB" type="number" />
+     </label>
+     <br /><br />
+     <button id="calcBtn">Calculate Sum</button>
+     
+     <h2 id="result"></h2>
+    
+     <script>
+        const numA=document.getElementById("numA");
+        const numB = document.getElementById("numB");
+        const resultEl=document.getElementById("result");
+
+        document.getElementById("calcBtn").addEventListener("click",async() =>{
+            const a=Number(numA.value);
+            const b=Number(numB.value);
+        
+if(Number.isNaN(a)||Number.isNaN(b)){
+   resultEl
+   .innerText="please enter valid numbers for A and B";
+}
+
+try{
+   const resp = await fetch("http://localhost:3000/sum",{
+   method: "POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({a,b})
+});
+
+const data = await resp.json();
+if (!resp.ok){
+   resultEl.innerText=`Error:${data.error||resp.statusText}`;
+   return;
+}
+resultEl.innerText="sum:"+data.sum;
+}catch(err){
+   resultEl.innerText="Network error: " + err.message;
+}
+        });
+     </script>
+
+</body>
+</html>
