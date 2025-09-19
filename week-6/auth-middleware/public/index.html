@@ -25,6 +25,7 @@
             });
             localStorage.setItem("token", response.data.token);
             alert("You are signed in");
+            renderUI();
         }
 
         async function getUserinfo() {
@@ -35,16 +36,38 @@
                     headers: { token: token }
                 });
                 document.getElementById("information").innerHTML =
-                    "Username: " + response.data.username + "<br>Password: " + response.data.password;
+                    "Welcome!! " + response.data.username + "<br>Password: " + response.data.password;
             } catch (error) {
                 console.error("Error fetching user info:", error.response?.data || error.message);
                 alert("Failed to get user info. Please sign in first.");
             }
         }
+
+        function logout() {
+            localStorage.removeItem("token");
+            alert("You have been logged out");
+            renderUI();
+        }
+
+        function renderUI(){
+            const token = localStorage.getItem("token");
+            const authsection = document.getElementById("auth-section")
+            const usersection = document.getElementById("user-section");
+            if (token) {
+                authsection.style.display = "none";
+                usersection.style.display = "block";
+                getUserinfo();
+            } else {
+                authsection.style.display = "block";
+                usersection.style.display = "none";
+            }
+        }
+        window.onload = renderUI;
     </script>
 </head>
 
 <body>
+    <div id = "auth-section">
     <div>
         <h3>Signup</h3>
         <input id="signup-username" type="text" placeholder="Username">
@@ -58,11 +81,16 @@
         <input id="signin-password" type="password" placeholder="Password">
         <button onclick="signin()">Submit</button>
     </div>
-
+    </div>
+<div id ="user-section" style="display: none;">
     <div>
         <h3>User Information:</h3>
         <button onclick="getUserinfo()">Get Info</button>
         <div id="information"></div>
+        <button onclick="logout()">logout</button>
     </div>
+
+</div>
+
 </body>
 </html>
