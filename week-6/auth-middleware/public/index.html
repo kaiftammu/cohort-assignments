@@ -4,7 +4,34 @@
     <meta charset="UTF-8">
     <title>Auth Website</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <link rel="stylesheet" href="public/style.css">
+</head>
 
+<body>
+    <div class="card" id = "auth-section">
+    <div>
+        <h3>Signup</h3>
+        <input id="signup-username" type="text" placeholder="Username">
+        <input id="signup-password" type="password" placeholder="Password">
+        <button onclick="signup()">Submit</button>
+    </div>
+
+    <div>
+        <h3>Signin</h3>
+        <input id="signin-username" type="text" placeholder="Username">
+        <input id="signin-password" type="password" placeholder="Password">
+        <button onclick="signin()">Submit</button>
+    </div>
+    </div>
+<div class="card" id ="user-section" style="display: none;">
+    <div>
+        <h3>User Information:</h3>
+        <button onclick="getUserinfo()">Get Info</button>
+        <div id="information"></div>
+        <button onclick="logout()">logout</button>
+    </div>
+
+</div>
     <script>
         async function signup() {
             const username = document.getElementById("signup-username").value;
@@ -64,33 +91,5 @@
         }
         window.onload = renderUI;
     </script>
-</head>
-
-<body>
-    <div id = "auth-section">
-    <div>
-        <h3>Signup</h3>
-        <input id="signup-username" type="text" placeholder="Username">
-        <input id="signup-password" type="password" placeholder="Password">
-        <button onclick="signup()">Submit</button>
-    </div>
-
-    <div>
-        <h3>Signin</h3>
-        <input id="signin-username" type="text" placeholder="Username">
-        <input id="signin-password" type="password" placeholder="Password">
-        <button onclick="signin()">Submit</button>
-    </div>
-    </div>
-<div id ="user-section" style="display: none;">
-    <div>
-        <h3>User Information:</h3>
-        <button onclick="getUserinfo()">Get Info</button>
-        <div id="information"></div>
-        <button onclick="logout()">logout</button>
-    </div>
-
-</div>
-
 </body>
 </html>

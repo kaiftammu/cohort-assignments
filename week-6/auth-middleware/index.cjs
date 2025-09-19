@@ -5,6 +5,7 @@ const JWT_SECRET = "ilovesanju";
 
 const app = express();
 app.use(express.json());
+app.use(express.static("."));
 
 const users = [];
 
