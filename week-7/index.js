@@ -1,10 +1,10 @@
 const express = require("express");
-const {userModel, todoModel} = require("./db");
+const { UserModel, TodoModel } = require("./db");
 const { auth, JWT_SECRET } = require("./auth");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://Kaiftammu:SimplyKaif%402004@cluster0.z8kqkky.mongodb.net/week-7-todos")
+mongoose.connect("")
 
 const app = express();
 app.use(express.json());
@@ -14,16 +14,15 @@ app.post("/signup", async function(req, res) {
     const password = req.body.password;
     const name = req.body.name;
 
-    await userModel.create({
+    await UserModel.create({
         email: email,
         password: password,
         name: name
     });
-
+    
     res.json({
-        message: " you are signed up "
+        message: "You are signed up"
     })
-
 });
 
 
@@ -31,12 +30,12 @@ app.post("/signin", async function(req, res) {
     const email = req.body.email;
     const password = req.body.password;
 
-    const response = await userModel.findOne({
+    const response = await UserModel.findOne({
         email: email,
         password: password,
     });
 
-    if(response){
+    if (response) {
         const token = jwt.sign({
             id: response._id.toString()
         }, JWT_SECRET);
@@ -46,10 +45,9 @@ app.post("/signin", async function(req, res) {
         })
     } else {
         res.status(403).json({
-            message: "incorrect credentials"
+            message: "Incorrect creds"
         })
     }
-
 });
 
 
@@ -58,14 +56,14 @@ app.post("/todo", auth, async function(req, res) {
     const title = req.body.title;
     const done = req.body.done;
 
-    await todoModel.create({
+    await TodoModel.create({
         userId,
         title,
         done
     });
 
     res.json({
-        message: "todo created"
+        message: "Todo created"
     })
 });
 
@@ -73,14 +71,13 @@ app.post("/todo", auth, async function(req, res) {
 app.get("/todos", auth, async function(req, res) {
     const userId = req.userId;
 
-    const todos = await todoModel.find({
+    const todos = await TodoModel.find({
         userId
     });
 
     res.json({
         todos
     })
-
 });
 
 app.listen(3000);

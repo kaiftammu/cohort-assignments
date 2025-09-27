@@ -1,19 +1,19 @@
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "ilovesanju1212";
+const JWT_SECRET = "s3cret";
 
 function auth(req, res, next) {
-  const token = req.headers.authorization?.split(" ")[1]; // Expecting "Bearer <token>"
-  if (!token) {
-    return res.status(401).json({ error: "Token missing" });
-  }
+    const token = req.headers.authorization;
 
-  try {
-    const decoded = jwt.verify(token, "your_secret_key");
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(401).json({ error: "Invalid token" });
-  }
+    const response = jwt.verify(token, JWT_SECRET);
+
+    if (response) {
+        req.userId = response.id;
+        next();
+    } else {
+        res.status(403).json({
+            message: "Incorrect creds"
+        })
+    }
 }
 
 module.exports = {
