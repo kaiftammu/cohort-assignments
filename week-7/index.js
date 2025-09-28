@@ -1,22 +1,45 @@
+const bcrypt = require("bcrypt");
 const express = require("express");
 const { UserModel, TodoModel } = require("./db");
 const { auth, JWT_SECRET } = require("./auth");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const { z } = require("zod");
 
-mongoose.connect("")
+mongoose.connect("mongodb+srv://Kaiftammu:SimplyKaif%402004@cluster0.z8kqkky.mongodb.net/week-7-todos")
 
 const app = express();
 app.use(express.json());
 
 app.post("/signup", async function(req, res) {
+    const requireBody = z.object({
+        email: z.string().min(3).max(100).email(),
+        password: z.string().min(3).max(100),
+        username: z.string().min(3).max(100)
+    })
+
+    const parsedDatawithSuccess = requireBody.safeParse(req.body);
+
+    if(!parsedDatawithSuccess.success){
+        res.json({
+            message: "incorrect format",
+            error: parsedDatawithSuccess.error
+        })
+        return
+    }
+
+
+
     const email = req.body.email;
     const password = req.body.password;
     const name = req.body.name;
 
+    const hashedPassword = await bcrypt.hash (password, 5);
+    console.log(hashedPassword)
+
     await UserModel.create({
         email: email,
-        password: password,
+        password: hashedPassword,
         name: name
     });
     
@@ -30,14 +53,14 @@ app.post("/signin", async function(req, res) {
     const email = req.body.email;
     const password = req.body.password;
 
-    const response = await UserModel.findOne({
+    const user = await UserModel.findOne({
         email: email,
-        password: password,
     });
 
-    if (response) {
+    const passwordMatch = bcrypt.compare(password, user.password);
+    if (user && passwordMatch) {
         const token = jwt.sign({
-            id: response._id.toString()
+            id: user._id.toString()
         }, JWT_SECRET);
 
         res.json({
@@ -49,7 +72,6 @@ app.post("/signin", async function(req, res) {
         })
     }
 });
-
 
 app.post("/todo", auth, async function(req, res) {
     const userId = req.userId;
